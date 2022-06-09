@@ -1,4 +1,4 @@
-# test_api-go-
+# test_api_golang
 
 open Terminal:
 > go run main.go 
