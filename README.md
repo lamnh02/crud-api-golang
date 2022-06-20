@@ -9,12 +9,12 @@ open Terminal:
 # API
 
 /tasks: 
-- Get all tasks
+- Get all tasks (GET)
 
 /task/{id}: 
-- Get a task
-- Delete a task
+- Get a task (GET)
+- Delete a task (DELETE)
 
 /task
-- Create a task
+- Create a task (POST)
 
