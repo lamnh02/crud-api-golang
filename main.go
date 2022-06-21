@@ -36,6 +36,7 @@ func returnSingleTask(w http.ResponseWriter, r *http.Request) {
     for _, task := range Tasks {
         if task.Id == key {
             json.NewEncoder(w).Encode(task)
+			
         }
     }
 }
@@ -57,6 +58,27 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
             Tasks = append(Tasks[:index], Tasks[index+1:]...)
         }
     }
+}
+
+func updateTask(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    id := vars["id"]
+
+    body, _ := ioutil.ReadAll(r.Body)
+
+    var taskUpdated Task
+	json.Unmarshal(body, &taskUpdated)
+
+	taskUpdated.Id = id
+
+	for index, task := range Tasks {
+		if task.Id == id {
+            fmt.Println("Endpoint: updated")
+			Tasks[index] = taskUpdated
+            json.NewEncoder(w).Encode("updated") 
+			return
+        }
+	}
 
 }
 
@@ -66,8 +88,10 @@ func handleRequests() {
     myRouter.HandleFunc("/tasks", returnAllTasks).Methods("GET")
     myRouter.HandleFunc("/task", createNewTask).Methods("POST")
     myRouter.HandleFunc("/task/{id}", deleteTask).Methods("DELETE")
-    myRouter.HandleFunc("/task/{id}", returnSingleTask)
-    log.Fatal(http.ListenAndServe(":10000", myRouter))
+    myRouter.HandleFunc("/task/{id}", returnSingleTask).Methods("GET")
+    myRouter.HandleFunc("/task/{id}", updateTask).Methods("PUT")
+
+	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
 func main() {
@@ -77,3 +101,4 @@ func main() {
     }
     handleRequests()
 }
+
