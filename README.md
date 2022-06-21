@@ -14,6 +14,7 @@ open Terminal:
 /task/{id}: 
 - Get a task (GET)
 - Delete a task (DELETE)
+- Update a task (PUT)
 
 /task
 - Create a task (POST)
